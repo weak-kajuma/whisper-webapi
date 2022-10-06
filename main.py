@@ -19,8 +19,6 @@ async def transcript(file: UploadFile = File(...)):
         upload_dir = open(os.path.join("./wav", filename),'wb+')
         shutil.copyfileobj(fileobj, upload_dir)
         upload_dir.close()
-        print("TASK:     Upload succeed[" + filename + "]")
         result = await asyncio.get_event_loop().run_in_executor(None, model.transcribe, "./wav/" + filename)
-        print("TASK:     " + filename + ": " + result["text"])
         return {"filename": filename, "result": result["text"]}
     return {"Error": "アップロードファイルが見つかりません。"}
